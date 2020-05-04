@@ -12,12 +12,6 @@ public class Main {
 
     static final List<Pair<String, String>> words = new ArrayList<>();
 
-    public static String getValue(String value) {
-        for (Pair<String, String> p : words)
-            if (p.getKey().equals(value))
-                return p.getValue();
-        return null;
-    }
 
 
     public static void main(String[] args) throws IOException {
