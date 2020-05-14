@@ -1,7 +1,10 @@
 package com.company;
+import javax.swing.border.Border;
 import java.io.*;
 import java.util.*;
 
+import static com.company.BorderCalculation.borderReturn;
+import static com.company.BorderCalculation.potentialTradingPartners;
 import static java.util.Comparator.comparing;
 
 class Main {
@@ -33,17 +36,17 @@ class Main {
 
         int i = 0;
         while (i < COMPANIES.size()) {
-            try (FileWriter fw = new FileWriter(OUTPUT_FILE_PATH, true);
-                 BufferedWriter writer = new BufferedWriter(fw)) {
+            try (FileWriter fw = new FileWriter(OUTPUT_FILE_PATH, true); BufferedWriter writer = new BufferedWriter(fw)) {
                 String str = COMPANIES.get(i).toString();
-                String[] arrOfStr = str.split(DELIMITER, COLUMNS_NEEDED);
-                writer.write(arrOfStr[0] + DELIMITER + arrOfStr[1]);
+                String[] arrOfStr = str.split(CSV_DELIMITER, COLUMNS_NEEDED);
+                writer.write(arrOfStr[0] + DELIMITER + arrOfStr[1] + DELIMITER + BorderCalculation.potentialTradingPartners(COMPANIES, arrOfStr[1]));
                 writer.newLine();
                 i++;
             } catch (IOException e) {
                 System.err.format("IOException: %s%n", e);
             }
         }
+
     }
 }
 
