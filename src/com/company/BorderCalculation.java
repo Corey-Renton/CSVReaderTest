@@ -29,11 +29,10 @@ public class BorderCalculation {
             }
             if(Companies.get(i).toString().contains(Country) && (Companies.get(i).toString().toUpperCase().contains("LIMITED") || Companies.get(i).toString().toUpperCase().contains("LTD"))){
                 value = (int) borderReturn().get(Country.toUpperCase());
-                amountOfPossibleTrades += value;
             }
             i++;
         }
-        return amountOfPossibleTrades -1;
+        return (amountOfPossibleTrades -1) + value;
     }
 
 }
