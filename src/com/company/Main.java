@@ -3,10 +3,11 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 class Main {
-    private static final List<Company> COMPANIES = new ArrayList<>();
+    public static final List<Company> COMPANIES = new ArrayList<>();
     private static final String CSV_DELIMITER = ",(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
     private static final int COMPANY_NAME_INDEX = 0;
     private static final int COMPANY_COUNTRY_INDEX = 12;
@@ -32,15 +33,15 @@ class Main {
         final Comparator<Company> comp = Comparator.comparing(Company::getCompanyCountry);
         COMPANIES.sort(comp);
 
+        COMPANIES.stream().filter(company -> company.getCompanyCountry().length() > 10).collect(Collectors.toSet());
 
         for(Company company : COMPANIES){
             try (FileWriter fw = new FileWriter(OUTPUT_FILE_PATH.toFile(), true);
                  BufferedWriter writer = new BufferedWriter(fw)
             ) {
-                String companyString = company.toString();
-                String[] companyStringSplit = companyString.split(CSV_DELIMITER, COLUMNS_NEEDED);
-                companyStringSplit[1] = companyStringSplit[1].replace("\"" , "");
-                writer.write(companyStringSplit[0] + DELIMITER + companyStringSplit[1] + DELIMITER + BorderCalculation.potentialTradingPartners(COMPANIES, companyStringSplit[1]));
+
+                writer.write(company.getCompanyName() + DELIMITER + company.getCompanyCountry()
+                        + DELIMITER + BorderCalculation.getTradingPartnerCount(company, company.getCompanyCountry()));
                 writer.newLine();
             } catch (IOException e) {
                 System.err.format("IOException: %s%n", e);
